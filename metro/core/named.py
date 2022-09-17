@@ -1,18 +1,14 @@
-"""
-Map Machine.
-
-Author: Sergey Vartanov (me@enzet.ru)
-"""
 import logging
+from dataclasses import dataclass
 from typing import Dict, Optional
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 
+@dataclass
 class Named:
-    def __init__(self) -> None:
-        self.names: Dict[str, str] = {}
+    names: dict[str, str]
 
     def set_name(self, language: str, name: str, ignore_rewrite: bool = True) -> None:
         if language in self.names and not ignore_rewrite and self.names[language] != name:
@@ -20,9 +16,7 @@ class Named:
         self.names[language] = name
 
     def set_names(self, names: Dict[str, str], ignore_rewrite: bool = True) -> None:
-        language: str
-        for language in names:
-            self.set_name(language, names[language], ignore_rewrite)
+        [self.set_name(language, names[language], ignore_rewrite) for language in names]
 
     def has_name(self, language: str) -> bool:
         return language in self.names or "int" in self.names

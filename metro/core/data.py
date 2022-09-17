@@ -5,15 +5,15 @@ dates, any kind of names, captions, etc.
 import logging
 import re
 from datetime import date
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
-en_system_type = "[Mm]etro|London [Uu]nderground|[Uu]nderground|[Tt]ube|[Ss]ubway|[Rr]ailway"
-en_caption = "(?P<name>((?!([Ss]tation|" + en_system_type + ")).)*)"
+en_system_type: str = "[Mm]etro|London [Uu]nderground|[Uu]nderground|[Tt]ube|[Ss]ubway|[Rr]ailway"
+en_caption: str = f"(?P<name>((?!([Ss]tation|{en_system_type})).)*)"
 
-station_name_dict = {
+station_name_dict: dict[str, list[str]] = {
     "az": ["^(?P<name>.*) metrostansiyası"],
     "be": ["^Станцыя метро (?P<name>.*)$"],
     "be-tarask": ["^(?P<name>.*) \\(станцыя мэтро\\)$"],
@@ -21,14 +21,14 @@ station_name_dict = {
     "bn": ["^(?P<name>.*) মেট্রো স্টেশন$"],
     "de": ["^Bahnhof (?P<name>.*)$", "^U-Bahnhof (?P<name>.*)$", "^S-Bahnhof (?P<name>.*)$"],
     "en": [
-        "^" + en_caption + "( \\(?(" + en_system_type + ")( )?[Ss]tation(s)?\\)?)$",
-        "^" + en_caption + " \\((?P<line>.*)[ _][Ll]ine\\)$",
-        "^" + en_caption + "( [Ss]tation(s)?)?$",
-        "^" + en_caption + "(#.*(" + en_system_type + "))?( stations)?$",
-        "^" + en_caption + " (" + en_system_type + ")$",
-        "^" + en_caption + "( \\(.* (" + en_system_type + ")\\))?$",
+        f"^{en_caption}( \\(?({en_system_type})( )?[Ss]tation(s)?\\)?)$",
+        f"^{en_caption} \\((?P<line>.*)[ _][Ll]ine\\)$",
+        f"^{en_caption}( [Ss]tation(s)?)?$",
+        f"^{en_caption}(#.*({en_system_type}))?( stations)?$",
+        f"^{en_caption} ({en_system_type})$",
+        f"^{en_caption}( \\(.* ({en_system_type})\\))?$",
         "^(?P<name>.* Railway Station) metro station$",
-    ],  # very special case
+    ],
     "fi": ["^(?P<name>.*) metroasema$"],
     "it": ["^(?P<name>.*) \\(.*\\)$", "^(?P<name>.*)-(Kol'cevaja|Radial'naja)$"],
     "ja": ["^(?P<name>.*)駅( \\(.*\\))?$"],
@@ -57,18 +57,14 @@ def extract_station_name(name: str, language: str) -> str:
     """
     name = name.replace("&", "and")
 
-    if language == "en" and name == "Nangloi Railway station":
-        return name
-
     if language in station_name_dict:
         for pattern in station_name_dict[language]:
-            m = re.match(pattern, name)
-            if m:
+            if m := re.match(pattern, name):
                 return m.group("name")
     return name
 
 
-def compute_short_station_id(names: Dict[str, str], local_languages: List[str]) -> Optional[str]:
+def compute_short_station_id(names: dict[str, str], local_languages: list[str]) -> Optional[str]:
     """
     Create station short identifier.
 
@@ -81,7 +77,7 @@ def compute_short_station_id(names: Dict[str, str], local_languages: List[str]) 
         return None
     for language in ["en"] + local_languages + list(sorted(names.keys())):
         if language in names:
-            return escape(extract_station_name(names[language], language))
+            return extract_station_name(names[language], language)
 
 
 line_name_dict = {
@@ -109,25 +105,18 @@ def extract_line_name(name: str, language: str):
     Try to remove all specifiers from the line caption.
 
     :param name: line caption with probably some specifiers.
+    :param language: language of the name.
     :return: pure line caption.
     """
-    replacements = {
-        # "Moscow Central Ring": "Moscow Central Circle",
-    }
-
     if language in line_name_dict:
         for pattern in line_name_dict[language]:
-            m = re.match(pattern, name)
-            if m:
-                return m.group("name")
-
-    if name in replacements:
-        name = replacements[name]
+            if matcher := re.match(pattern, name):
+                return matcher.group("name")
 
     return name
 
 
-def compute_line_id(names: Dict[str, Any], local_languages: List[str] = None) -> Optional[str]:
+def compute_line_id(names: dict[str, Any], local_languages: list[str] = None) -> Optional[str]:
     """
     Compute line identifier using its names in different languages.
 
@@ -138,15 +127,15 @@ def compute_line_id(names: Dict[str, Any], local_languages: List[str] = None) ->
         logging.error("cannot compute line ID, no names")
         return None
 
-    output = ""
+    output: str = ""
 
     if local_languages is None:
         local_languages = []
 
-    # We sort language identifiers to make the result more predictable.
+    # Sort language identifiers to make the result more predictable.
     for language in ["en"] + local_languages + list(sorted(names.keys())):
         if language in names:
-            return escape(extract_line_name(names[language], language))
+            return extract_line_name(names[language], language)
 
     return output
 
@@ -176,19 +165,16 @@ def get_date(string_date):
     year, month, day = 1, 1, 1
     accuracy = "none"
 
-    m = re.match("^(?P<year>\\d\\d\\d\\d)$", string_date)
-    if m:
+    if m := re.match("^(?P<year>\\d\\d\\d\\d)$", string_date):
         year = int(m.group("year"))
         accuracy = "year"
 
-    m = re.match("^(?P<month>\\d\\d)[.\\- ](?P<year>\\d\\d\\d\\d)$", string_date)
-    if m:
+    if m := re.match("^(?P<month>\\d\\d)[.\\- ](?P<year>\\d\\d\\d\\d)$", string_date):
         month = int(m.group("month"))
         year = int(m.group("year"))
         accuracy = "month"
 
-    m = re.match("^(?P<day>\\d\\d)[.\\- ](?P<month>\\d\\d)[.\\- ](?P<year>\\d\\d\\d\\d)$", string_date)
-    if m:
+    if m := re.match("^(?P<day>\\d\\d)[.\\- ](?P<month>\\d\\d)[.\\- ](?P<year>\\d\\d\\d\\d)$", string_date):
         day = int(m.group("day"))
         month = int(m.group("month"))
         year = int(m.group("year"))
@@ -198,9 +184,7 @@ def get_date(string_date):
 
 
 def get_date_representation(string_date, language, translator):
-    """
-    Date representation parsing from [[DD.]MM.]YYYY representation.
-    """
+    """Date representation parsing from [[DD.]MM.]YYYY representation."""
     d, accuracy = get_date(string_date)
     if accuracy == "year":
         return d.strftime("%Y")
