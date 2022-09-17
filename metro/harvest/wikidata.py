@@ -388,15 +388,6 @@ class WikidataParser:
         )
         return json.loads(content.decode())
 
-    def parse_river(self, river):
-        structure = self.parse_wikidata(river["wikidata_id"])
-        item = WikidataItem(structure, river["wikidata_id"])
-        if "names" not in river:
-            river["names"] = {}
-        names = item.get_names()
-        for language in names:
-            river.set_name(language, names[language])
-
 
 class WikidataCityParser:
     def __init__(

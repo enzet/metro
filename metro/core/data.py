@@ -140,21 +140,6 @@ def compute_line_id(names: dict[str, Any], local_languages: list[str] = None) ->
     return output
 
 
-def river_name(name, language):
-    """
-    River name extraction from it"s caption (which is used for Wikipedia or Wikidata page names). For example, for
-    "Dnieper River" it should give "Dnieper".
-
-    :param: name: input river name
-    :return: cropped river name
-    """
-    if language == "en":
-        m = re.match("^(?P<name>.*) River$", name)
-        if m:
-            return m.group("name")
-    return name
-
-
 def get_date(string_date):
     """
     Parsing date from [[DD.]MM.]YYYY representation.
