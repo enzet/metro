@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+echo "Looking for changes..."
+files=`git status --porcelain | wc -l`
+if [ ${files} == 0 ] ; then
+    echo "OK"
+else
+    echo "FAIL"
+    git status
+    exit 1
+fi
+
+data/githooks/pre-commit || { echo "FAIL"; exit 1; }
+
+# Unit tests with pytest.
+
+echo "Run tests with pytest..."
+pytest -vv || { echo "FAIL"; exit 1; }
+
+exit 0
