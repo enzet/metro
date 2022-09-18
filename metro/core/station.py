@@ -79,44 +79,28 @@ class Station(Named):
         return data.extract_station_name(text, language)
 
     def get_connections(self, connection_type: "ConnectionType" = None) -> list["Connection"]:
-        connections = []
-        connection: Connection
-        for connection in self.connections:
-            if connection_type is None or connection.type_ == connection_type:
-                connections.append(connection)
-        return connections
-
-    def get_connection_type(self, other: "Station") -> Optional["ConnectionType"]:
-        connection: Connection
-        for connection in self.connections:
-            if connection.to_ == other:
-                return connection.type_
-        return None
+        return [x for x in self.connections if connection_type is None or x.type_ == connection_type]
 
     def get_connection(self, other: "Station") -> Optional["Connection"]:
-        connection: Connection
-        for connection in self.connections:
-            if connection.to_ == other:
-                return connection
-        return None
+        connections: list[Connection] = [x for x in self.connections if x.to_ == other]
+        return connections[0] if connections else None
 
     def check_height_and_structure(self) -> None:
         if self.structure_type:
             self.structure_type.check_height(self.altitude, self.id_)
 
     def recompute(self) -> None:
+        """Assume ground station altitude."""
         if self.structure_type and self.altitude is None:
             if StationStructure.is_ground(self.structure_type):
                 self.altitude = 2
 
     def is_terminus(self) -> bool:
         """Should we draw this station as terminus."""
-        connection: Connection
-        for connection in self.connections:
-            if connection.type_ == ConnectionType.TRANSITION:
-                return False
-        count = 0
-        count_for_hidden = 0
+        if self.is_transition():
+            return False
+        count: int = 0
+        count_for_hidden: int = 0
         connection: Connection
         for connection in self.connections:
             if connection.type_ == ConnectionType.NEXT:
@@ -125,10 +109,7 @@ class Station(Named):
                     count_for_hidden += 1
                 else:
                     count += 1
-        if self.is_hidden():
-            return count + count_for_hidden <= 1
-        else:
-            return count <= 1
+        return (count + count_for_hidden <= 1) if self.is_hidden() else count <= 1
 
     def is_transition(self) -> bool:
         """If this station is as transition station."""

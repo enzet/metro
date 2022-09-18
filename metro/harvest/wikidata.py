@@ -73,7 +73,6 @@ class WikidataItem:
         :param structure: Wikidata item structure
         :param wikidata_id: Wikidata item unique identifier
         """
-        super().__init__()
         self.wikidata_id = wikidata_id
 
         if "entities" not in structure:
@@ -184,7 +183,7 @@ class WikidataStationItem(WikidataItem):
 
         name: str = WIKIDATA_ITEM_PREFIX + str(wikidata_id)
 
-        self.structure_type = None
+        self.structure_type: Optional[str] = None
 
         if WIKIDATA_PROPERTY_INSTANCE_OF in self.claims:
             for claim in self.claims[WIKIDATA_PROPERTY_INSTANCE_OF]:
@@ -417,7 +416,7 @@ class WikidataCityParser:
         for system_wikidata_id in systems_dict:
             self.systems_dict[system_wikidata_id] = map_.systems[systems_dict[system_wikidata_id]]
 
-    def parse(self, limit: Optional[int] = None, parse_wikipedia_languages: list[str] = None) -> None:
+    def parse(self, limit: Optional[int] = None) -> None:
 
         # TODO: add filter, so we can parse only stations of one line, or at least of one city.
 
@@ -558,11 +557,6 @@ class WikidataCityParser:
                     item_stations.append(station)
                 else:
                     logging.error("cannot compute station ID")
-
-            # station: Station
-            # for station in item_stations:
-            #     if parse_wikipedia_languages:
-            #         wikipedia_parser.parse_station_wikipedia_pages(station, parse_wikipedia_languages)
 
             # Connect all stations inside one Wikidata stations item.
             # TODO: check if we need ConnectionType.SAME here.
