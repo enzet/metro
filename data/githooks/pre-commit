@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+python_files="metro"
+
+echo "Checking code format with Black..."
+if ! black -l 120 --check ${python_files}; then
+    black -l 120 --diff --color ${python_files}
+    echo "FAIL"
+    exit 1
+fi
+
+# Link with Flake8.
+
+echo "Lint with Flake8..."
+flake8 \
+    --max-line-length=120 \
+    --ignore=E203,W503,ANN002,ANN003,ANN101,ANN102 \
+    ${python_files} \
+    || { echo "FAIL"; exit 1; }
