@@ -4,7 +4,7 @@ from typing import Any, Optional
 
 from metro.core.line import Line
 from metro.core.named import Named
-from metro.core.station import Station, ConnectionType, Connection
+from metro.core.station import Connection, Station
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"

@@ -8,8 +8,8 @@ from typing import Any, Optional
 
 from metro.core import data, network
 from metro.core.line import Line
-from metro.core.station import ObjectStatus, Station
-from metro.core.system import System, ConnectionType, Map
+from metro.core.station import ConnectionType, ObjectStatus, Station
+from metro.core.system import Map, System
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
@@ -185,12 +185,11 @@ class WikidataStationItem(WikidataItem):
         name: str = WIKIDATA_ITEM_PREFIX + str(wikidata_id)
 
         self.structure_type = None
-        station_type = None
 
         if WIKIDATA_PROPERTY_INSTANCE_OF in self.claims:
             for claim in self.claims[WIKIDATA_PROPERTY_INSTANCE_OF]:
                 if get_value(claim)["id"] == WIKIDATA_ITEM_METRO_STATION:
-                    station_type = "metro"
+                    _ = "metro"
                 if get_value(claim)["id"] == WIKIDATA_ITEM_STATION_LOCATED_ON_SURFACE:
                     self.structure_type = "ground"
                 if get_value(claim)["id"] == WIKIDATA_ITEM_STATION_LOCATED_UNDERGROUND:
