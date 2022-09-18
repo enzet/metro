@@ -34,7 +34,7 @@ class Line(Named):
 
     def serialize(self) -> dict[str, Any]:
         """Serialize transport route to structure."""
-        structure = {"id": self.id_}
+        structure: dict[str, Any] = {"id": self.id_}
 
         for key in [x.name for x in fields(Line)]:
             value = self.__getattribute__(key)

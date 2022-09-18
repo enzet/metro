@@ -67,15 +67,12 @@ class Station(Named):
         return self.id_.replace("/", "___")
 
     def get_caption(self, language) -> str:
-        text = "unknown"
+        text: str = "unknown"
         if self.id_:
             text = self.id_[self.id_.find("/") + 1 :]
-        if self.has_name(language):
-            text = self.get_name(language)
-        elif self.has_name(language + "_tr"):
-            text = self.get_name(language + "_tr")
-        elif self.has_name(language + "_un"):
-            text = self.get_name(language + "_un")
+        for postfix in "", "_tr", "_un":
+            if self.has_name(language + postfix):
+                text = self.get_name(language + postfix)
         return data.extract_station_name(text, language)
 
     def get_connections(self, connection_type: "ConnectionType" = None) -> list["Connection"]:
