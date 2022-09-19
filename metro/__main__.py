@@ -37,7 +37,7 @@ if __name__ == "__main__":
     )
     city_parser.parse()
 
-    output_directory: Path = Path("out") / map_.id_
+    output_directory: Path = Path("out")
     output_directory.mkdir(parents=True, exist_ok=True)
 
     system: System = map_.systems["metro"]
