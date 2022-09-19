@@ -1,5 +1,7 @@
+import argparse
 import json
 import logging
+import sys
 from pathlib import Path
 
 from metro.core.system import System, Map
@@ -13,23 +15,31 @@ if __name__ == "__main__":
 
     logging.basicConfig(format="%(levelname)s %(message)s", level=logging.INFO)
 
-    map_: Map = Map("prague_metro")
-    map_.local_languages = ["cz"]
-    map_.systems = {"metro": System({}, "metro")}
+    parser: argparse.ArgumentParser = argparse.ArgumentParser()
+    parser.add_argument("--system-wikidata-id")
+    parser.add_argument("--station-wikidata-ids", nargs="+")
+    parser.add_argument("--cache", default="cache")
+    arguments = parser.parse_args(sys.argv[1:])
 
-    cache_directory: Path = Path("cache")
+    cache_directory: Path = Path(arguments.cache)
     cache_directory.mkdir(exist_ok=True)
 
     wikidata_parser: WikidataParser = WikidataParser(cache_directory)
+    map_: Map = Map("metro", {}, {"metro": System({}, "metro")}, ["en"])
 
-    parser = WikidataCityParser(wikidata_parser, map_, {190271: "metro"}, [1877386], 190271, [])
-    parser.parse()
+    city_parser: WikidataCityParser = WikidataCityParser(
+        wikidata_parser,
+        map_,
+        {int(arguments.system_wikidata_id): "metro"},
+        [int(x) for x in arguments.station_wikidata_ids],
+        int(arguments.system_wikidata_id),
+        [],
+    )
+    city_parser.parse()
 
     output_directory: Path = Path("out") / map_.id_
     output_directory.mkdir(parents=True, exist_ok=True)
 
-    for system in map_.systems.values():
-        with (output_directory / f"{system.id_}.json").open("w+") as output_file:
-            json.dump(system.serialize(), output_file, indent=4, ensure_ascii=False)
-        with (output_directory / f"{system.id_}.json").open() as input_file:
-            System({}, system.id_).deserialize(json.load(input_file))
+    system: System = map_.systems["metro"]
+    with (output_directory / f"{system.id_}.json").open("w+") as output_file:
+        json.dump(system.serialize(), output_file, indent=4, ensure_ascii=False)

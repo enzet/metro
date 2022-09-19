@@ -8,5 +8,5 @@ This is a project for parsing transport networks from
 Test run will result in parsing Prague metro system:
 
 ```shell
-python -m metro
+python -m metro --system 190271 --station 1877386
 ```
