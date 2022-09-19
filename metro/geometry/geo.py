@@ -2,6 +2,9 @@ from typing import Dict, Optional
 
 import numpy as np
 
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
+
 
 class Position:
     """Geographical position: longitude, latitude, and altitude."""

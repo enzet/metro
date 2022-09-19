@@ -2,6 +2,9 @@ from datetime import datetime
 from enum import Enum
 from typing import Any
 
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
+
 
 TIME_FORMAT = "%Y.%m.%d %H:%M:%S"
 

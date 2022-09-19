@@ -10,8 +10,9 @@ from typing import Any, Optional
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
-en_system_type: str = "[Mm]etro|London [Uu]nderground|[Uu]nderground|[Tt]ube|[Ss]ubway|[Rr]ailway"
-en_caption: str = f"(?P<name>((?!([Ss]tation|{en_system_type})).)*)"
+
+EN_SYSTEM_TYPE: str = "[Mm]etro|London [Uu]nderground|[Uu]nderground|[Tt]ube|[Ss]ubway|[Rr]ailway"
+EN_CAPTION: str = f"(?P<name>((?!([Ss]tation|{EN_SYSTEM_TYPE})).)*)"
 
 station_name_dict: dict[str, list[str]] = {
     "az": ["^(?P<name>.*) metrostansiyası"],
@@ -21,12 +22,12 @@ station_name_dict: dict[str, list[str]] = {
     "bn": ["^(?P<name>.*) মেট্রো স্টেশন$"],
     "de": ["^Bahnhof (?P<name>.*)$", "^U-Bahnhof (?P<name>.*)$", "^S-Bahnhof (?P<name>.*)$"],
     "en": [
-        f"^{en_caption}( \\(?({en_system_type})( )?[Ss]tation(s)?\\)?)$",
-        f"^{en_caption} \\((?P<line>.*)[ _][Ll]ine\\)$",
-        f"^{en_caption}( [Ss]tation(s)?)?$",
-        f"^{en_caption}(#.*({en_system_type}))?( stations)?$",
-        f"^{en_caption} ({en_system_type})$",
-        f"^{en_caption}( \\(.* ({en_system_type})\\))?$",
+        f"^{EN_CAPTION}( \\(?({EN_SYSTEM_TYPE})( )?[Ss]tation(s)?\\)?)$",
+        f"^{EN_CAPTION} \\((?P<line>.*)[ _][Ll]ine\\)$",
+        f"^{EN_CAPTION}( [Ss]tation(s)?)?$",
+        f"^{EN_CAPTION}(#.*({EN_SYSTEM_TYPE}))?( stations)?$",
+        f"^{EN_CAPTION} ({EN_SYSTEM_TYPE})$",
+        f"^{EN_CAPTION}( \\(.* ({EN_SYSTEM_TYPE})\\))?$",
         "^(?P<name>.* Railway Station) metro station$",
     ],
     "fi": ["^(?P<name>.*) metroasema$"],

@@ -1,22 +1,15 @@
-"""
-Map Machine.
-
-Utility for network connections.
-
-Author: Sergey Vartanov (me@enzet.ru)
-"""
+"""Utility for network connections."""
 
 import json
 import logging
 import os
+import time
 import urllib
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Optional
 
 import urllib3
-import time
-
-from datetime import datetime, timedelta
 
 
 def get(address: str, parameters: dict[str, str], cache_file: Path) -> Optional[bytes]:

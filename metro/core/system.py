@@ -9,6 +9,7 @@ from metro.core.station import Connection, Station
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+
 DEFAULT_STYLE_ID: str = "normal"
 
 

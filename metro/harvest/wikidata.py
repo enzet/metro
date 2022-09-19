@@ -14,6 +14,7 @@ from metro.core.system import Map, System
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
+
 WIKIDATA_ITEM_PREFIX = "Q"
 
 WIKIDATA_PROPERTY_ROUTE_MAP = "P15"

@@ -2,11 +2,10 @@ from dataclasses import dataclass, fields
 from typing import Any, Optional
 
 from metro.core.named import Named
+from metro.core.serialization import is_null, deserialize, serialize
 
 __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
-
-from metro.core.serialization import is_null, deserialize, serialize
 
 
 @dataclass

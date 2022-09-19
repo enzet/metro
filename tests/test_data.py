@@ -1,12 +1,10 @@
-"""
-Map Machine.
-
-Author: Sergey Vartanov (me@enzet.ru)
-"""
 from metro.core.data import extract_line_name, extract_station_name
 
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
 
-stations = {
+
+stations: dict[str, list[list[str]]] = {
     "az": [
         ["Qara Qarayev metrostansiyası", "Qara Qarayev"],
     ],
@@ -56,24 +54,24 @@ stations = {
         ["Estação Zaieltsovskaia", "Zaieltsovskaia"],
     ],
     "ru": [
-        ["Теремки (станция метро)", "Теремки"],
         ["Авиамоторная (станция метро, Калининско-Солнцевская линия)", "Авиамоторная"],
         ["Дустлик (станция метро, Ташкент)", "Дустлик"],
+        ["Теремки (станция метро)", "Теремки"],
     ],
     "tt": [
         ["Авиатөзелеш (метро станциясе)", "Авиатөзелеш"],
     ],
     "uk": [
         ["Авіабудівельна (станція метро)", "Авіабудівельна"],
-        ["Московська (станція метро, Казань)", "Московська"],
         ["Герцена (станція метро)", "Герцена"],
+        ["Московська (станція метро, Казань)", "Московська"],
     ],
     "zh": [
         ["昆采沃站", "昆采沃"],
     ],
 }
 
-lines = {
+lines: dict[str, list[list[str]]] = {
     "be": [
         ["Аўтазаводская лінія", "Аўтазаводская"],
     ],

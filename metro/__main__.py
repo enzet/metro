@@ -5,6 +5,9 @@ from pathlib import Path
 from metro.core.system import System, Map
 from metro.harvest.wikidata import WikidataCityParser, WikidataParser
 
+__author__ = "Sergey Vartanov"
+__email__ = "me@enzet.ru"
+
 
 if __name__ == "__main__":
 
