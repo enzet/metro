@@ -1,0 +1,43 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Transport system",
+    "description": "Description of a transport system",
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "The unique identifier for a transport system",
+            "type": "string"
+        },
+        "stations": {
+            "description": "Set of stations",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "The unique identifier for station in the form of <line id>/<short station id>",
+                        "type": "string"
+                    }
+                },
+                "required": ["id"]
+            },
+            "uniqueItems": true
+        },
+        "lines": {
+            "description": "Set of lines",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "The unique identifier for line",
+                        "type": "string"
+                    }
+                },
+                "required": ["id"]
+            },
+            "uniqueItems": true
+        }
+    },
+    "required": ["id", "stations", "lines"]
+}
