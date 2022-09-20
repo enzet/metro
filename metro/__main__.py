@@ -11,8 +11,7 @@ __author__ = "Sergey Vartanov"
 __email__ = "me@enzet.ru"
 
 
-if __name__ == "__main__":
-
+def main():
     logging.basicConfig(format="%(levelname)s %(message)s", level=logging.INFO)
 
     parser: argparse.ArgumentParser = argparse.ArgumentParser()
@@ -43,3 +42,7 @@ if __name__ == "__main__":
     system: System = map_.systems["metro"]
     with (output_directory / f"{system.id_}.json").open("w+") as output_file:
         json.dump(system.serialize(), output_file, indent=4, ensure_ascii=False)
+
+
+if __name__ == "__main__":
+    main()
