@@ -1,7 +1,6 @@
 # Metro
 
-This is a project for parsing transport networks from
-[Wikidata](https://wikidata.org).
+[Wikidata](https://wikidata.org) parser for transport networks.
 
 ## Example run
 
