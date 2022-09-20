@@ -2,6 +2,14 @@
 
 [Wikidata](https://wikidata.org) parser for transport networks.
 
+## Install
+
+Requirements: Python 3.9.
+
+```shell
+pip install .
+```
+
 ## Example run
 
 To parse Prague metro system one should specify system Wikidata item
@@ -10,7 +18,7 @@ arbitrary station Wikidata item
 ([Q1877386](https://www.wikidata.org/wiki/Q1877386) for Florenc metro station).
 
 ```shell
-python -m metro --system 190271 --station 1877386
+metro --system 190271 --station 1877386
 ```
 
 ## Output
