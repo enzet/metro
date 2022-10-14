@@ -17,6 +17,31 @@
                     "id": {
                         "description": "The unique identifier for station in the form of <line id>/<short station id>",
                         "type": "string"
+                    },
+                    "names": {
+                        "description": "Station names in different languages",
+                        "type": "object"
+                    },
+                    "geo_position": {
+                        "description": "Geographical position: (latitude, longitude)",
+                        "type": "array"
+                    },
+                    "connections": {
+                        "description": "Stations that can be directly accessed from this station by train or by transfer",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "to": {
+                                    "description": "Unique identifier of the adjacent station",
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "description": "Type of the connection: next or transition",
+                                    "type": "string"
+                                }
+                            }
+                        }
                     }
                 },
                 "required": ["id"]
